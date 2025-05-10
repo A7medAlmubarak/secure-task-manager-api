@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  mariadb:
+    image: mariadb:11
+    container_name: task-mariadb
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: task_manager_db
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+    restart: unless-stopped
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.2.3
+    container_name: task-keycloak
+    command: start-dev
+    environment:
+      KC_BOOTSTRAP_ADMIN_USERNAME: admin
+      KC_BOOTSTRAP_ADMIN_PASSWORD: admin
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
+
+  app:
+    build: .
+    container_name: task-manager-app
+    ports:
+      - "8081:8081"
+    depends_on:
+      - mariadb
+      - keycloak
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mariadb://mariadb:3306/task_manager_db
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER-URI: http://keycloak:8080/realms/task-manager-realm
+    restart: unless-stopped
+
+volumes:
+  db_data:

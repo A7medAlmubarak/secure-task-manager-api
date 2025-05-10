@@ -1,0 +1,28 @@
+server:
+  port: 8081
+
+spring:
+  datasource:
+    url: jdbc:mariadb://localhost:3306/task_manager_db?useSSL=false&serverTimezone=UTC
+    username: root
+    password: 45471010
+    driver-class-name: org.mariadb.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+
+security:
+  oauth2:
+    resource-server:
+      jwt:
+        issuer-uri: http://localhost:8080/realms/task-manager-realm
+        jwk-set-uri: http://localhost:8080/realms/task-manager-realm/protocol/openid-connect/certs
+jwt:
+  auth:
+    converter:
+      principle-attribute: sub
+      resource-id: task-manager-app
