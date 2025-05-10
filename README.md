@@ -56,6 +56,7 @@ Log in as admin.
 
 b. Build and Run Instructions
 Clone the Repository
+git clone git@github.com:A7medAlmubarak/secure-task-manager-api.git
 cd secure-task-manager-api
 
 Build the App : ./mvnw clean package
