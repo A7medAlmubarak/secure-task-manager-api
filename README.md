@@ -1,3 +1,4 @@
+make it in code view to see the ddd structure at the end :)
 A Spring Boot RESTful API for managing personal tasks with secure authentication via Keycloak , JWT validation, and role-based access control.
 
 This application allows users to:
